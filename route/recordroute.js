@@ -4,8 +4,8 @@ const mongoose = require("mongoose")
 const AppRouter = express.Router()
 const itemModel = require("../models/db.model.js")
 
-
-AppRouter.post("/api/create", async (req, res) =>{
+// TO ADD RECORD TO DB
+AppRouter.post("/api/create", (req, res) =>{
     let data =  new itemModel(req.body)
     data.save()
     .then(todo =>{
@@ -17,10 +17,10 @@ AppRouter.post("/api/create", async (req, res) =>{
 })
 
 
+// TO DISPLAY ALL THE RECORD IN THE DB
+AppRouter.get("/api/displayrecord",async (req, res) =>{
 
-AppRouter.get("/api/displayrecord",(req, res) =>{
-
-    itemModel.find(function(err, record){
+    await itemModel.find(function(err, record){
         if(err){
             console.log(err)
             err.send(400).json("record not found")
@@ -34,9 +34,10 @@ AppRouter.get("/api/displayrecord",(req, res) =>{
    
 })
 
-AppRouter.get("/api/getrecord/:id",(req, res) =>{
+// TO GET A SINGLE RECORD
+AppRouter.get("/api/getrecord/:id", async(req, res) =>{
 
-    itemModel.findById(req.params.id, (err, data)=>{
+    await itemModel.findById(req.params.id, (err, data)=>{
         if (err){
             res.json("record not found")
         }
@@ -46,8 +47,9 @@ AppRouter.get("/api/getrecord/:id",(req, res) =>{
     })
 })
 
-AppRouter.delete("/api/deleterecord/:id", (req, res) =>{
-    itemModel.findByIdAndRemove(req.params.id, (err, data)=>{
+// TO DELETE A SINGLE TO RECORD
+AppRouter.delete("/api/deleterecord/:id",  async (req, res) =>{
+    await itemModel.findByIdAndRemove(req.params.id, (err, data)=>{
         if (err){
             res.json("could not delete record")
         }
@@ -58,6 +60,7 @@ AppRouter.delete("/api/deleterecord/:id", (req, res) =>{
 })
 
 
+// TO UPDATE A SINGLE RECORD
 AppRouter.route("/api/updates/:id",(req, res)=>{
     itemModel.findById(req.params.id,(err, data)=>{
         if (err){

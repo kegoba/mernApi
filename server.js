@@ -12,6 +12,7 @@ mongoose.Promise = global.Promise;
 app.use(cors())
 app.use(bodyParser.json());
 
+//
 
 
 
@@ -27,6 +28,7 @@ app.listen(8080, function () {
 
 
 app.use("/", route)
+
 
 
 
