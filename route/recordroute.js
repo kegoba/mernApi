@@ -1,8 +1,8 @@
-const bodyParser = require("body-parser")
 const express = require("express")
-const mongoose = require("mongoose")
 const AppRouter = express.Router()
-const itemModel = require("../models/db.model.js")
+
+// database connection
+const itemModel = require("../models/record.model.js")
 
 // TO ADD RECORD TO DB
 AppRouter.post("/api/create", (req, res) =>{
@@ -18,9 +18,9 @@ AppRouter.post("/api/create", (req, res) =>{
 
 
 // TO DISPLAY ALL THE RECORD IN THE DB
-AppRouter.get("/api/displayrecord",async (req, res) =>{
+AppRouter.get("/api/displayrecord", (req, res) =>{
 
-    await itemModel.find(function(err, record){
+    itemModel.find(function(err, record){
         if(err){
             console.log(err)
             err.send(400).json("record not found")
@@ -35,9 +35,9 @@ AppRouter.get("/api/displayrecord",async (req, res) =>{
 })
 
 // TO GET A SINGLE RECORD
-AppRouter.get("/api/getrecord/:id", async(req, res) =>{
+AppRouter.get("/api/getrecord/:id",(req, res) =>{
 
-    await itemModel.findById(req.params.id, (err, data)=>{
+        itemModel.findById(req.params.id, (err, data)=>{
         if (err){
             res.json("record not found")
         }
@@ -61,7 +61,7 @@ AppRouter.delete("/api/deleterecord/:id",  async (req, res) =>{
 
 
 // TO UPDATE A SINGLE RECORD
-AppRouter.route("/api/updates/:id",(req, res)=>{
+AppRouter.post("/api/updates/:id",(req, res)=>{
     itemModel.findById(req.params.id,(err, data)=>{
         if (err){
             res.status(400).json(" record not found")
